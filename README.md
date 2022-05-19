@@ -4,5 +4,3 @@
 
 We propose an automated reward shaping method for guiding exploration in instruction following settings where the agent extracts auxiliary objectives from the general goal by asking itself intermediate questions, building on a question generation (QG) and question answering (QA) system.
 ## Installation
-
-Clone this repository.
