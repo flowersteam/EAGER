@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="90fa323c-4d29-4762-87b7-09f7716fa984" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="24bPRKuBOxLiun2HNdSGtaL3szp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/tcarta/EAGER",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/scripts/sample_runs/train_cls" />
+      <recent name="$PROJECT_DIR$/scripts/sample_runs/gen_demos" />
+      <recent name="$PROJECT_DIR$/scripts" />
+      <recent name="$PROJECT_DIR$/babyai/scripts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/babyai/scripts" />
+      <recent name="$PROJECT_DIR$/babyai/babyai" />
+      <recent name="$PROJECT_DIR$/scripts" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.test_QG_QA">
+    <configuration name="plot_result_qg_qa" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EAGER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/babyai/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/babyai/scripts/plot_result_qg_qa.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plotting" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="EAGER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/babyai/babyai" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/babyai/babyai/plotting.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="shaped_env" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EAGER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/babyai/babyai" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/babyai/babyai/shaped_env.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_QG_QA" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EAGER" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/babyai/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/babyai/scripts/test_QG_QA.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.plotting" />
+      <item itemvalue="Python.plot_result_qg_qa" />
+      <item itemvalue="Python.shaped_env" />
+      <item itemvalue="Python.test_QG_QA" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.plot_result_qg_qa" />
+        <item itemvalue="Python.shaped_env" />
+        <item itemvalue="Python.test_QG_QA" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="90fa323c-4d29-4762-87b7-09f7716fa984" name="Changes" comment="" />
+      <created>1643896304409</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1643896304409</updated>
+      <workItem from="1643896306061" duration="4018000" />
+      <workItem from="1643965126341" duration="6040000" />
+      <workItem from="1644826072150" duration="6361000" />
+      <workItem from="1644999008712" duration="3378000" />
+      <workItem from="1645006335033" duration="12736000" />
+      <workItem from="1645083656006" duration="17246000" />
+      <workItem from="1645171488131" duration="18269000" />
+      <workItem from="1645429954958" duration="27058000" />
+      <workItem from="1645536226341" duration="13416000" />
+      <workItem from="1645561418788" duration="5620000" />
+      <workItem from="1645603226971" duration="16004000" />
+      <workItem from="1645631538024" duration="119000" />
+      <workItem from="1645631663202" duration="6050000" />
+      <workItem from="1645640139620" duration="6204000" />
+      <workItem from="1645689691220" duration="23122000" />
+      <workItem from="1645725570645" duration="2160000" />
+      <workItem from="1645776087218" duration="16818000" />
+      <workItem from="1646040697542" duration="2990000" />
+      <workItem from="1646123167798" duration="29575000" />
+      <workItem from="1646174220679" duration="849000" />
+      <workItem from="1646208575700" duration="23759000" />
+      <workItem from="1646248494159" duration="2767000" />
+      <workItem from="1646295734892" duration="3076000" />
+      <workItem from="1646300844696" duration="17237000" />
+      <workItem from="1646379470655" duration="27542000" />
+      <workItem from="1646640676175" duration="18032000" />
+      <workItem from="1646673337974" duration="2762000" />
+      <workItem from="1646727051318" duration="21157000" />
+      <workItem from="1646774361255" duration="599000" />
+      <workItem from="1646813137275" duration="21612000" />
+      <workItem from="1646902503257" duration="21544000" />
+      <workItem from="1646943124937" duration="1732000" />
+      <workItem from="1646984752698" duration="14693000" />
+      <workItem from="1647101834891" duration="11635000" />
+      <workItem from="1647161489954" duration="16820000" />
+      <workItem from="1647244753665" duration="31543000" />
+      <workItem from="1647368169839" duration="5203000" />
+      <workItem from="1647419144338" duration="354000" />
+      <workItem from="1647456117212" duration="3000" />
+      <workItem from="1647467166112" duration="3000" />
+      <workItem from="1647879100618" duration="7000" />
+      <workItem from="1647880720112" duration="1286000" />
+      <workItem from="1648026464655" duration="15362000" />
+      <workItem from="1648195589912" duration="8286000" />
+      <workItem from="1648208213182" duration="3610000" />
+      <workItem from="1648450708949" duration="15709000" />
+      <workItem from="1649316111865" duration="22236000" />
+      <workItem from="1649488083310" duration="19164000" />
+      <workItem from="1649577326079" duration="17060000" />
+      <workItem from="1649661208726" duration="18547000" />
+      <workItem from="1649744978582" duration="25350000" />
+      <workItem from="1649831734709" duration="14452000" />
+      <workItem from="1649865660600" duration="2102000" />
+      <workItem from="1649920358932" duration="28305000" />
+      <workItem from="1650006140406" duration="10164000" />
+      <workItem from="1650267912019" duration="8255000" />
+      <workItem from="1650354028579" duration="288000" />
+      <workItem from="1650375100873" duration="12088000" />
+      <workItem from="1650435310721" duration="1329000" />
+      <workItem from="1650437290132" duration="24274000" />
+      <workItem from="1650520082030" duration="516000" />
+      <workItem from="1650526121496" duration="14912000" />
+      <workItem from="1650619088098" duration="8567000" />
+      <workItem from="1650697913744" duration="22126000" />
+      <workItem from="1650781799086" duration="19913000" />
+      <workItem from="1650867546605" duration="36011000" />
+      <workItem from="1650957701204" duration="27322000" />
+      <workItem from="1651000391324" duration="8510000" />
+      <workItem from="1651043968282" duration="15551000" />
+      <workItem from="1651089945144" duration="1877000" />
+      <workItem from="1651131476631" duration="24439000" />
+      <workItem from="1651174185596" duration="2575000" />
+      <workItem from="1651214363453" duration="26189000" />
+      <workItem from="1651310211908" duration="20000000" />
+      <workItem from="1651389309086" duration="3129000" />
+      <workItem from="1651396015154" duration="6583000" />
+      <workItem from="1651477356878" duration="29238000" />
+      <workItem from="1651517886007" duration="5916000" />
+      <workItem from="1651561075653" duration="3000" />
+      <workItem from="1651573616595" duration="617000" />
+      <workItem from="1651578881815" duration="21155000" />
+      <workItem from="1651648043389" duration="18670000" />
+      <workItem from="1651689580103" duration="4371000" />
+      <workItem from="1651735045957" duration="16828000" />
+      <workItem from="1651779912272" duration="1792000" />
+      <workItem from="1651820281490" duration="19697000" />
+      <workItem from="1651905299064" duration="18990000" />
+      <workItem from="1652001935203" duration="1888000" />
+      <workItem from="1652080296308" duration="4000" />
+      <workItem from="1652083275418" duration="20402000" />
+      <workItem from="1652164788357" duration="19363000" />
+      <workItem from="1652253042691" duration="4938000" />
+      <workItem from="1652338303694" duration="6635000" />
+      <workItem from="1652423332544" duration="9847000" />
+      <workItem from="1652562108785" duration="1630000" />
+      <workItem from="1652599629954" duration="35195000" />
+      <workItem from="1652679538646" duration="12304000" />
+      <workItem from="1652736870294" duration="28000" />
+      <workItem from="1652768078159" duration="7271000" />
+      <workItem from="1652867882631" duration="2571000" />
+      <workItem from="1652870947307" duration="9077000" />
+      <workItem from="1652940745754" duration="627000" />
+      <workItem from="1652943459638" duration="284000" />
+      <workItem from="1652944079529" duration="809000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ELLA$plot_result_qg_qa.coverage" NAME="plot_result_qg_qa Coverage Results" MODIFIED="1649322859012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/scripts" />
+    <SUITE FILE_PATH="coverage/ELLA$shaped_env.coverage" NAME="shaped_env Coverage Results" MODIFIED="1646988910733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/babyai" />
+    <SUITE FILE_PATH="coverage/ELLA$plotting.coverage" NAME="plotting Coverage Results" MODIFIED="1651402172014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/babyai" />
+    <SUITE FILE_PATH="coverage/ELLA$test_QG_QA.coverage" NAME="test_QG_QA Coverage Results" MODIFIED="1646421477716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/scripts" />
+  </component>
+</project>
