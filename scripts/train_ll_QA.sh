@@ -16,4 +16,3 @@ python babyai/scripts/train_il_QA.py \
 --lr 1e-4 \
 --no-answer-question True
 #--wb
-#--biased True \

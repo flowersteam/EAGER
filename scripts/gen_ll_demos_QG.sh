@@ -8,6 +8,4 @@ python babyai/scripts/make_agent_demos_QG.py \
 --include-goal --QG-generation \
 --gen-no-answer-question True \
 --seed 1
-# --gen-no-answer-question True
-# --biased True
-#--episodes 15000
+

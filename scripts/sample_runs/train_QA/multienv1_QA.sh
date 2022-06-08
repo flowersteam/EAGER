@@ -1,1 +1,0 @@
-scripts/train_ll_QA.sh multienv1 multienv1 10

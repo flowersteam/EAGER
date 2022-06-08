@@ -1,1 +1,1 @@
-scripts/gen_ll_demos_QG.sh multienv3
+scripts/gen_ll_demos_QG.sh multienv
