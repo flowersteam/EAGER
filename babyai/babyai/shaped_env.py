@@ -15,30 +15,26 @@ import spacy
 nlp = spacy.load('en_core_web_sm')
 stop_words = {'a', 'the', 'next', 'to', 'up', 'put', 'pick', 'after', 'then', 'and', 'open', 'you', ',', '-pron-', 'go'}
 pad = 0
-dict_biased_proba = {'key': {'yellow': 0.5, 'purple': 0.1, 'blue': 0.1, 'red': 0.1, 'grey': 0.1, 'green': 0.1},
-                     'box': {'yellow': 0.1, 'purple': 0.5, 'blue': 0.1, 'red': 0.1, 'grey': 0.1, 'green': 0.1},
-                     'ball': {'yellow': 0.1, 'purple': 0.1, 'blue': 0.5, 'red': 0.1, 'grey': 0.1, 'green': 0.1}}
 
 from babyai.QA_simple import Model
-from babyai.l_class import Model as Model_l
 from attrdict import AttrDict
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
 
 
-def load_model(no_answer, debiased, train_env, biased_train_env, model_QA, epoch_QA, model_qa_l=None, epoch_qa_l=None):
+def load_model(no_answer, train_env, model_QA, epoch_QA):
+    '''
+    loading QA model and the associated vocabulary
+    '''
     # Load voc
     demo_voc = utils.get_demos_QG_voc_path('{}_agent_done'.format(train_env), train_env, None,
                                            valid=False)
     if no_answer == True:
         demo_voc = demo_voc.replace("QG_vocab.pkl", "QG_no_answer_vocab.pkl")
-    if debiased == True or biased_train_env == True:
-        demo_voc = demo_voc.replace("vocab.pkl", "biased_vocab.pkl")
-    print(demo_voc)
+
     vocab = utils.load_voc(demo_voc)
     # values for the model
-    print(vocab['answer'])
     emb_size = len(vocab['question'])
     numb_action = 8
 
@@ -101,59 +97,32 @@ def load_model(no_answer, debiased, train_env, biased_train_env, model_QA, epoch
     if no_answer:
         attr['vocab_path'] = demo_voc
         et_qa = Model(attr, emb_size, numb_action, pad=0)
-        if debiased == True or biased_train_env == True:
-            et_qa.load_state_dict(torch.load('storage/models/{}_no_answer_biased/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                                                              model_QA,
-                                                                                                              epoch_QA)))
-            if debiased == True:
-                qa_l = Model_l(attr, emb_size, 0, pad=0)
-                qa_l.load_state_dict(torch.load('storage/models/{}_no_answer_l_class/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                                                                  model_qa_l,
-                                                                                                                  epoch_qa_l)))
-                qa_l.cuda()
-                qa_l.eval()
-        else:
-            et_qa.load_state_dict(torch.load('storage/models/{}_no_answer/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                                                       model_QA,
-                                                                                                       epoch_QA)))
+        et_qa.load_state_dict(torch.load('storage/models/{}_no_answer/model_{}/et_qa_{}.pt'.format(train_env,
+                                                                                                   model_QA,
+                                                                                                   epoch_QA)))
     else:
         attr['vocab_path'] = demo_voc
         et_qa = Model(attr, emb_size, numb_action, pad=0)
-        if debiased == True or biased_train_env == True:
-            et_qa.load_state_dict(torch.load('storage/models/{}_biased/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                                                    model_QA,
-                                                                                                    epoch_QA)))
-            if debiased == True:
-                qa_l = Model_l(attr, emb_size, 0, pad=0)
-                qa_l.load_state_dict(torch.load('storage/models/{}_l_class/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                                                        model_qa_l,
-                                                                                                        epoch_qa_l)))
-                qa_l.cuda()
-                qa_l.eval()
-        else:
-            print('storage/models/{}/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                  model_QA,
-                                                                  epoch_QA))
-            et_qa.load_state_dict(torch.load('storage/models/{}/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                                             model_QA,
-                                                                                             epoch_QA)))
-    print('===vocab_path===')
-    print(attr['vocab_path'])
+        et_qa.load_state_dict(torch.load('storage/models/{}/model_{}/et_qa_{}.pt'.format(train_env,
+                                                                                         model_QA,
+                                                                                         epoch_QA)))
     et_qa.cuda()
     et_qa.eval()
 
-    if debiased:
-        return et_qa, vocab, qa_l
-    else:
-        return et_qa, vocab
+    return et_qa, vocab
 
 
 def preprocess_token(token):
-    # Reduce token to its lowercase lemma form
+    '''
+    Reduce token to its lowercase lemma form
+    '''
     return token.lemma_.strip().lower()
 
 
 def QG(mission, questionable_words):
+    '''
+    Question generation module
+    '''
     len_mission = len(mission)
     qg_data = {'questions': [], 'answers': []}
     for idx_w in range(len_mission):
@@ -179,6 +148,9 @@ def numericalize(vocab, words, train=False):
 
 
 def generate_batch(demo, bs):
+    '''
+    generates a batch that will be pass to the QA
+    '''
     batch_demo = {}
     nbQueries = []
     for k in demo:
@@ -234,18 +206,18 @@ def generate_batch(demo, bs):
 
     maxNb = max(nbQueries)
 
-    nbQueries= torch.tensor(nbQueries).view(bs, 1).expand(bs, maxNb)
-    validQuery=torch.tensor(np.arange(maxNb)).view(1,maxNb).expand(bs, -1)
-    validQuery=torch.where(validQuery >= nbQueries, False, True).view(-1)
+    nbQueries = torch.tensor(nbQueries).view(bs, 1).expand(bs, maxNb)
+    validQuery = torch.tensor(np.arange(maxNb)).view(1, maxNb).expand(bs, -1)
+    validQuery = torch.where(validQuery >= nbQueries, False, True).view(-1)
 
     frames_tensor = batch_demo['frames'].view(bs, 1, -1)
     frames_tensor = frames_tensor.expand(-1, maxNb, -1)
-    frames_tensor = frames_tensor.reshape(bs*maxNb, batch_demo['length_frames_max'], 3, 7, 7)
+    frames_tensor = frames_tensor.reshape(bs * maxNb, batch_demo['length_frames_max'], 3, 7, 7)
     batch_demo['frames'] = frames_tensor[validQuery]
 
     actions_tensor = batch_demo['actions'].view(bs, 1, -1)
     actions_tensor = actions_tensor.expand(-1, maxNb, -1)
-    actions_tensor = actions_tensor.reshape(bs*maxNb, batch_demo['length_frames_max'])
+    actions_tensor = actions_tensor.reshape(bs * maxNb, batch_demo['length_frames_max'])
     batch_demo['actions'] = actions_tensor[validQuery]
 
     # batch_demo['answers'] = batch_demo['answers'].cuda()
@@ -254,14 +226,13 @@ def generate_batch(demo, bs):
     assert batch_demo['questions'].shape[0] == batch_demo['frames'].shape[0]
     assert batch_demo['questions'].shape[0] == batch_demo['actions'].shape[0]
 
-
     return batch_demo
 
 
 def multi_worker(conn, envs):
     """Target for a subprocess that handles a set of envs"""
     while True:
-        cmd, data, biased_env = conn.recv()
+        cmd, data = conn.recv()
         # step(actions, stop_mask)
         if cmd == "step":
             ret = []
@@ -270,20 +241,6 @@ def multi_worker(conn, envs):
                     obs, reward, done, info = env.step(a)
                     if done:
                         obs = env.reset()
-                        if biased_env:
-                            m = nlp(obs["mission"])
-                            adj1 = str(m[2])
-                            obj1 = str(m[3])
-                            adj2 = str(m[7])
-                            obj2 = str(m[8])
-                            while dict_biased_proba[obj1][adj1]*dict_biased_proba[obj2][adj2]< np.random.rand():
-                                env.reset()
-                                obs = env.reset()
-                                m = nlp(obs["mission"])
-                                adj1 = str(m[2])
-                                obj1 = str(m[3])
-                                adj2 = str(m[7])
-                                obj2 = str(m[8])
                     ret.append((obs, reward, done, info))
                 else:
                     ret.append((None, 0, False, None))
@@ -364,12 +321,6 @@ class ParallelShapedEnv(gym.Env):
                  train_env=None,  # name of env used for training
                  model_QA=None,  # scheme used for training QA
                  epoch_QA=None,  # epoch of the trained model used
-                 model_qa_l=None,  # model for the linguistic only QA
-                 epoch_qa_l=None,  # epoch for the linguistic only QA
-                 debiased=None,
-                 # if the original dataset is biased, debiased by doing the difference with prediction learn only with the language
-                 biased_env=None, # generate a biased env with higher probability to have some combination of words only for PNL env
-                 biased_train_env=None,  # to select a QA train on a biased env only for PNL
                  stateactionpredictor=None,  # if you use a reward based on curiosity
                  obss_preprocessor=None
                  ):
@@ -395,9 +346,6 @@ class ParallelShapedEnv(gym.Env):
         self.learn_baseline_cls = learn_baseline_cls
         self.learn_baseline_preproc = learn_baseline_preproc
         self.type_QG_QA_reward = type_QG_QA_reward
-        self.debiased = debiased
-        self.biased_train_env = biased_train_env
-        self.biased_env = biased_env
         self.stateactionpredictor = stateactionpredictor
         self.obss_preprocessor = obss_preprocessor
 
@@ -445,23 +393,10 @@ class ParallelShapedEnv(gym.Env):
             )
 
         if self.reward_shaping in ["QG_QA"]:
-
-            if self.debiased:
-                self.QA, self.vocabulary, self.QA_l = load_model(no_answer_question,
-                                                                 self.debiased,
-                                                                 train_env,
-                                                                 biased_train_env=biased_train_env,
-                                                                 model_QA=model_QA,
-                                                                 epoch_QA=epoch_QA,
-                                                                 model_qa_l=model_qa_l,
-                                                                 epoch_qa_l=epoch_qa_l)
-            else:
-                self.QA, self.vocabulary = load_model(no_answer_question,
-                                                      self.debiased,
-                                                      train_env,
-                                                      biased_train_env=biased_train_env,
-                                                      model_QA=model_QA,
-                                                      epoch_QA=epoch_QA)
+            self.QA, self.vocabulary = load_model(no_answer_question,
+                                                  train_env,
+                                                  model_QA=model_QA,
+                                                  epoch_QA=epoch_QA)
             self.questionable_words = self.vocabulary['answer'].to_dict()['index2word']
 
             self.questions = [[] for _ in range(self.num_envs)]
@@ -549,7 +484,7 @@ class ParallelShapedEnv(gym.Env):
         for i in range(0, self.num_envs, self.envs_per_proc):
             self.locals[i // self.envs_per_proc].send(
                 ("step", [actions[i:i + self.envs_per_proc],
-                          stop_mask[i:i + self.envs_per_proc]], self.biased_env)
+                          stop_mask[i:i + self.envs_per_proc]])
             )
         results = []
         for i in range(0, self.num_envs, self.envs_per_proc):
@@ -755,14 +690,7 @@ class ParallelShapedEnv(gym.Env):
             if self.type_QG_QA_reward in ["simple"]:
                 demo_batch = generate_batch(demo_dict, self.num_envs)
                 with torch.no_grad():
-                    if self.debiased:
-                        answer_pred_QA = self.QA.forward(self.vocabulary['question'], **demo_batch)[
-                            'answers'].cpu().detach()
-                        answer_pred_QA_l = self.QA_l.forward(self.vocabulary['question'], **demo_batch)[
-                            'answers'].cpu().detach()
-                        answer_pred = F.relu(F.softmax(answer_pred_QA, dim=1) - F.softmax(answer_pred_QA_l, dim=1))
-                    else:
-                        answer_pred = self.QA.forward(self.vocabulary['question'], **demo_batch)[
+                    answer_pred = self.QA.forward(self.vocabulary['question'], **demo_batch)[
                             'answers'].cpu().detach()
                 success_pred_batch = (torch.argmax(answer_pred, dim=1) == demo_batch['answers'])
                 not_answered_question = (torch.argmax(answer_pred, dim=1) != demo_batch['answers']).cpu().detach()
@@ -783,14 +711,7 @@ class ParallelShapedEnv(gym.Env):
             elif self.type_QG_QA_reward in ["adjusted"]:
                 demo_batch = generate_batch(demo_dict, self.num_envs)
                 with torch.no_grad():
-                    if self.debiased:
-                        answer_pred_QA = self.QA.forward(self.vocabulary['question'], **demo_batch)[
-                            'answers'].cpu().detach()
-                        answer_pred_QA_l = self.QA_l.forward(self.vocabulary['question'], **demo_batch)[
-                            'answers'].cpu().detach()
-                        answer_pred = F.relu(F.softmax(answer_pred_QA, dim=1) - F.softmax(answer_pred_QA_l, dim=1))
-                    else:
-                        answer_pred = self.QA.forward(self.vocabulary['question'], **demo_batch)[
+                    answer_pred = self.QA.forward(self.vocabulary['question'], **demo_batch)[
                             'answers'].cpu().detach()
 
                 good_answers = (torch.argmax(answer_pred, dim=1) == demo_batch['answers'])
@@ -813,10 +734,7 @@ class ParallelShapedEnv(gym.Env):
                             self.questions_answered_len_current[i] += 1
                     count += lenq
 
-        if self.reward_shaping in ["IC"]:
-            obs_state = self.obss_preprocessor(self.obss, device=self.device)
-
-        elif self.reward_shaping in ["RIDE"]:
+        if self.reward_shaping in ["RIDE"]:
             obs_state = self.obss_preprocessor(self.obss, device=self.device)
             for i in range(self.num_envs):
                 key = tuple(torch.cat([obs_state.image[i].view(-1), obs_state.instr[i].view(-1)]).tolist())
@@ -892,16 +810,6 @@ class ParallelShapedEnv(gym.Env):
                     torch.tensor(pi_l_actions).to(self.device))
             self.tasks_succeeded = reward > 0
             self.past_pi_l_done_discounted *= 1. / self.subtask_discount
-
-        elif self.reward_shaping in ["IC"]:
-            obs_next_state = self.obss_preprocessor(self.obss, device=self.device)
-            with torch.no_grad():
-                phi2_pred, actions_pred, _, phi2 = self.stateactionpredictor(obs_state, obs_next_state,
-                                                                             torch.tensor(actions_to_take,
-                                                                                          device=self.device,
-                                                                                          dtype=torch.long))
-
-            info = torch.clamp(0.01 / 2 * torch.square(torch.norm(phi2 - phi2_pred, dim=1)), max=1)
 
         elif self.reward_shaping in ["RIDE"]:
             obs_next_state = self.obss_preprocessor(self.obss, device=self.device)

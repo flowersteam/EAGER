@@ -1,15 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90fa323c-4d29-4762-87b7-09f7716fa984" name="Changes" comment="second commit">
+    <list default="true" id="90fa323c-4d29-4762-87b7-09f7716fa984" name="Changes" comment="complete README file">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/QA_simple.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/QA_simple.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/imitation_QA.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/imitation_QA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/rl/algos/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/rl/algos/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/rl/algos/base_paral.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/rl/algos/base_paral.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/rl/algos/ppo.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/rl/algos/ppo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/rl/algos/ppo_paral.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/rl/algos/ppo_paral.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/shaped_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/shaped_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/babyai/shaped_env_paral.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/babyai/shaped_env_paral.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/scripts/make_agent_demos_QG.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/scripts/make_agent_demos_QG.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/scripts/train_il_QA.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/scripts/train_il_QA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/babyai/scripts/train_rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/babyai/scripts/train_rl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env-mac.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/gen_learn_demos.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/gen_ll_demos.sh" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/gen_ll_demos_QG.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/gen_ll_demos_QG.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/multienv_QG.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/multienv_QG.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/train_QA/multienv1_QA.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/train_QA/multienv2_QA.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/train_QA/multienv3_QA.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/gen_subtask_recipe_demos.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/results_QA.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/gtl_learn.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/gtl_term_cls.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/gtm_term_cls.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pick_QG.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pnl_rel_cls_oracle.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pnla_QG.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pnla_rel_cls_oracle.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pnm_rel_cls_oracle.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pom_QG.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pop_QG.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pop_rel_cls_oracle.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/pum_term_cls.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/seq_rel_cls_oracle.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/unlm_rel_cls_oracle.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/gen_demos/unlock_QG.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_QG_QA.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_QG_QA.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_QG_QA_IC.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_QG_QA_no_answer_debiased.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_RIDE.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_RIDE.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_ella.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_ella.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_learn.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_learn.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_ppo.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/sample_runs/rl/pnl_ppo.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/sample_runs/rl/pnm_ella.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/sample_runs/rl/pnm_ella.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/test_QG_QA.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/test_paral.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/trace_agent_traj.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/trace_agent_traj.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_l_class.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_learn_baseline_001_D.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_learn_cls.sh" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/train_ll_QA.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train_ll_QA.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_ll_cls.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_onl_subtask_025_D.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_onl_subtask_05_D.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_onl_subtask_D.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_onl_subtask_D_sa.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_ppo_baseline.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_IC.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_RIDE.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer_biased_train_env.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer_biased_train_env_paral.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer_paral.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer_paral.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer_paral_sa.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_rl_QG_QA_no_answer_sa.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/train_subtask_cls_ones.sh" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,15 +99,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tcarta/EAGER&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/tcarta/ELLA",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -279,7 +338,13 @@
       <workItem from="1652940745754" duration="627000" />
       <workItem from="1652943459638" duration="284000" />
       <workItem from="1652944079529" duration="1513000" />
-      <workItem from="1654675843348" duration="3829000" />
+      <workItem from="1654675843348" duration="4487000" />
+      <workItem from="1654766868442" duration="606000" />
+      <workItem from="1656489839437" duration="631000" />
+      <workItem from="1665145251908" duration="1806000" />
+      <workItem from="1665316880984" duration="611000" />
+      <workItem from="1665395263472" duration="8077000" />
+      <workItem from="1665472064862" duration="12103000" />
     </task>
     <task id="LOCAL-00001" summary="second commit">
       <created>1652944937724</created>
@@ -295,7 +360,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652944985630</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="complete README file">
+      <created>1654680139681</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1654680139681</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,13 +386,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="second commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="second commit" />
+    <MESSAGE value="complete README file" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete README file" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ELLA$test_QG_QA.coverage" NAME="test_QG_QA Coverage Results" MODIFIED="1646421477716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/scripts" />
+    <SUITE FILE_PATH="coverage/ELLA$plotting.coverage" NAME="plotting Coverage Results" MODIFIED="1651402172014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/babyai" />
     <SUITE FILE_PATH="coverage/ELLA$plot_result_qg_qa.coverage" NAME="plot_result_qg_qa Coverage Results" MODIFIED="1649322859012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/scripts" />
     <SUITE FILE_PATH="coverage/ELLA$shaped_env.coverage" NAME="shaped_env Coverage Results" MODIFIED="1646988910733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/babyai" />
-    <SUITE FILE_PATH="coverage/ELLA$plotting.coverage" NAME="plotting Coverage Results" MODIFIED="1651402172014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/babyai" />
     <SUITE FILE_PATH="coverage/EAGER$test_QG_QA.coverage" NAME="test_QG_QA Coverage Results" MODIFIED="1654679442481" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/scripts" />
-    <SUITE FILE_PATH="coverage/ELLA$test_QG_QA.coverage" NAME="test_QG_QA Coverage Results" MODIFIED="1646421477716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/babyai/scripts" />
   </component>
 </project>

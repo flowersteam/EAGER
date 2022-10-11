@@ -48,9 +48,6 @@ class PPOAlgo(BaseAlgo):
         # Collect experiences
 
         exps, logs = self.collect_experiences(debug=self.debug)
-        # print(exps.action)
-        # action_counts = exps.action.unique(return_counts=True)
-        # pi_l_action_counts = exps.pi_l_action.unique(return_counts=True)
         '''
         exps is a DictList with the following keys ['obs', 'memory', 'mask', 'action', 'value', 'reward',
          'advantage', 'returnn', 'log_prob'] and ['collected_info', 'extra_predictions'] if we use aux_info
@@ -214,8 +211,6 @@ class PPOAlgo(BaseAlgo):
             logs["error_forward_model"] = numpy.mean(log_forward_model_loss)
             logs["error_inverse_model"] = numpy.mean(log_inverse_model_loss)
             logs["error_pred"] = numpy.mean(log_predictor_loss)
-        # logs["actions"] = action_counts[0].cpu().numpy(), (action_counts[1].float()/action_counts[1].sum()).cpu().numpy()
-        # logs["pi_l_actions"] = pi_l_action_counts[0].cpu().numpy(), (pi_l_action_counts[1].float()/pi_l_action_counts[1].sum()).cpu().numpy()
 
         return logs
 

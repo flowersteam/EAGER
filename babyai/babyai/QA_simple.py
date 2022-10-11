@@ -7,7 +7,6 @@ from babyai import base
 from nn.enc_lang_QA import EncoderLang_QA
 from nn.enc_visual import FeatureFlat, SimpleEncoder
 from nn.enc_vl import EncoderVL
-# from alfred.nn.encodings import DatasetLearnedEncoding
 from nn.dec_QA import QAClassifier
 
 class Model(base.Model):

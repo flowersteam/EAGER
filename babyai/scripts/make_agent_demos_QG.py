@@ -78,12 +78,12 @@ parser.add_argument("--include-goal", action="store_true", default=False,
                     help="Include an image of the final goal")
 parser.add_argument("--include-direction", action="store_true", default=True,
                     help="Include list of agent orientations")
+
+# Specific arguments used in EAGER
 parser.add_argument("--QG-generation", action="store_true", default=False,
                     help="Make dataset for QA training")
 parser.add_argument("--gen-no-answer-question", type=bool, default=False,
                     help="Generate unanswerable questions")
-parser.add_argument("--biased", type=bool, default=False,
-                    help="Generate biased data set for QA and for the the language classifier")
 
 args = parser.parse_args()
 logger = logging.getLogger(__name__)
@@ -97,12 +97,8 @@ stop_words = {'a', 'the', 'next', 'to', 'up', 'put', 'pick', 'open', 'you'}
 
 pad = 0
 
-dict_biased_proba = {'key': {'yellow': 0.5, 'purple': 0.1, 'blue': 0.1, 'red': 0.1, 'grey': 0.1, 'green': 0.1},
-                     'box': {'yellow': 0.1, 'purple': 0.5, 'blue': 0.1, 'red': 0.1, 'grey': 0.1, 'green': 0.1},
-                     'ball': {'yellow': 0.1, 'purple': 0.1, 'blue': 0.5, 'red': 0.1, 'grey': 0.1, 'green': 0.1}}
 
 def create_vocab(gen_no_answer_question):
-
     if gen_no_answer_question:
         v = {'question': Vocab(['<<pad>>', '<<question>>']),
              'answer': Vocab(['<<no_answer>>'])}
@@ -166,12 +162,12 @@ def QG(mission, gen_no_answer_question, seed):
                     answer.append('<<no_answer>>')
                     if wrong_mission[idx_w] in qg_data['answers']:
                         similarities += 1
-                # we add to qg_data the questions with a proba link to the similarity of the wrong mission
-                # with the true mission, missions that have a high similarity are rarer, so they are favored
-                # proba_selection = [0.1, 0.1, 0.15, 0.25, 0.3]
-                # p_s = proba_selection[similarities]
-                # the function below has been designed to obtain similar value than the one commented above
-                # that have been empirically found  
+                # We add to qg_data the no_answer questions with a proba related to the similarity between
+                # the wrong mission and the true mission. Missions that have a high similarity are rarer, so they are
+                # favored. We empirically found that proba_selection = [0.1, 0.1, 0.15, 0.25, 0.3] with
+                # p_s = proba_selection[similarities], gives good results.
+                # To extend this result to any number of similarities we designed the function below
+                # to get similar values.
                 p_s = 0.325 / (1 + np.exp(6.75 - 3 * similarities)) + 0.095
                 for q, a in zip(question, answer):
                     if np.random.rand() < p_s:
@@ -212,6 +208,9 @@ def print_demo_lengths(demos, counter_demos):
 
 
 def generate_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True):
+    '''
+    To obtain trajectories for a single environment
+    '''
     utils.seed(seed)
 
     # Generate environment
@@ -242,10 +241,7 @@ def generate_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True
              'frames': [],
              'length_frames': [],
              'actions': []}
-    if args.biased and args.env == "BabyAI-PutNextLocal-v0":
-        demo_l_class = {'questions': [],
-                        'answers': []
-                        }
+
     counter_demos = 0
     checkpoint_time = time.time()
 
@@ -264,21 +260,6 @@ def generate_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True
             env.seed(seed + counter_demos)
         obs = env.reset()
 
-        if args.biased and args.env == "BabyAI-PutNextLocal-v0":
-            m = nlp(obs["mission"])
-            adj1 = str(m[2])
-            obj1 = str(m[3])
-            adj2 = str(m[7])
-            obj2 = str(m[8])
-            while dict_biased_proba[obj1][adj1]*dict_biased_proba[obj2][adj2]< np.random.rand():
-                env.reset()
-                obs = env.reset()
-                m = nlp(obs["mission"])
-                adj1 = str(m[2])
-                obj1 = str(m[3])
-                adj2 = str(m[7])
-                obj2 = str(m[8])
-
         if "BabyAI" in env.spec.id:
             agent.on_reset()
 
@@ -290,12 +271,16 @@ def generate_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True
 
         obss = []
 
+        # to generate noisy example trajectories
+        randomness_of_the_agent = np.random.choice(np.array([0., 0.1, 0.4, 0.8]),
+                                                       size=1,
+                                                       p=[0.45, 0.35, 0.1, 0.1])
         try:
             action_done = None
             while not done:
                 if "BabyAI" in env.spec.id:
 
-                    if np.random.rand() < 0:
+                    if np.random.rand() < randomness_of_the_agent:
                         action = -1
                         while action in {-1, 5, 6}:
                             action = env.action_space.sample()
@@ -344,17 +329,11 @@ def generate_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True
                             other_goals.append(mission)
                         # create question, answer pairs
                         qg_data = QG(mission, gen_no_answer_question, seed)
-                        if args.biased and args.env == "BabyAI-PutNextLocal-v0":
-                            qg_data_language_classifier = QG(mission, False, seed)
 
                         # numericalized
                         questions = [numericalize(vocab['question'], x) for x in qg_data['questions']]
                         answers = [numericalize(vocab['answer'], x) for x in qg_data['answers']]
-                        if args.biased and args.env == "BabyAI-PutNextLocal-v0":
-                            l_class_questions = [numericalize(vocab['question'], x) for x in qg_data_language_classifier['questions']]
-                            l_class_answers = [numericalize(vocab['answer'], x) for x in qg_data_language_classifier['answers']]
-                            demo_l_class['questions'].append(l_class_questions)
-                            demo_l_class['answers'].append(l_class_answers)
+
                         demos['env_ids'].append(env.unwrapped.spec.id)
                         demos['missions'].append(mission)
                         demos['questions'].append(questions)
@@ -440,11 +419,7 @@ def generate_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True
             logger.info("Saving demos...")
             demo_tens = tensorized(demos)
             # utils.save_demos(demo_tens, str(demos_path).replace('.pkl', '_{}.pkl'.format(counter_demos // args.save_interval)))
-            if args.biased and args.env == "BabyAI-PutNextLocal-v0":
-                utils.save_demos(demo_tens, str(demos_path).replace('.pkl', '_biased.pkl'))
-                utils.save_demos(demo_l_class, str(demos_path).replace('.pkl', '_biased_l_class.pkl'))
-            else:
-                utils.save_demos(demo_tens, demos_path)
+            utils.save_demos(demo_tens, demos_path)
             logger.info("{} demos saved".format(counter_demos))
             print_demo_lengths(demos, counter_demos)
             """demos = {'env_ids': [],
@@ -457,26 +432,19 @@ def generate_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True
     # Save demonstrations
     logger.info("Saving demos...")
     demo_tens = tensorized(demos)
-    if args.biased and args.env == "BabyAI-PutNextLocal-v0":
-        utils.save_demos(demo_tens, str(demos_path).replace('.pkl', '_biased.pkl'))
-        utils.save_demos(demo_l_class, str(demos_path).replace('.pkl', '_biased_l_class.pkl'))
-        with open("{}.txt".format(str(demos_path).replace('.pkl', '_biased')), "w") as output:
-            output.write(str(list(set_of_missions)))
-    else:
-        utils.save_demos(demo_tens, demos_path)
-        with open("{}.txt".format(str(demos_path).replace('.pkl', '')), "w") as output:
-            output.write(str(list(set_of_missions)))
+    utils.save_demos(demo_tens, demos_path)
+    with open("{}.txt".format(str(demos_path).replace('.pkl', '')), "w") as output:
+        output.write(str(list(set_of_missions)))
     logger.info("{} demos saved".format(counter_demos))
     if not valid:
-        if args.biased and args.env == "BabyAI-PutNextLocal-v0":
-            pkl.dump(vocab, open(str(demos_path).replace('.pkl', '_biased_vocab.pkl'), "wb"))
-        else:
-            pkl.dump(vocab, open(str(demos_path).replace('.pkl', '_vocab.pkl'), "wb"))
-
+        pkl.dump(vocab, open(str(demos_path).replace('.pkl', '_vocab.pkl'), "wb"))
 
 
 def generate_multi_env_demos(n_episodes, valid, seed, shift=0, gen_no_answer_question=True):
-    # This function is executed if args.env = multienv
+    """
+    This function is executed if args.env = multienv
+    It uses a mixture of different environments:Open-Large, PickUp-Large, PutNextTo-Local, and Sequence-Medium.
+    """
 
     utils.seed(seed)
 
@@ -538,10 +506,14 @@ def generate_multi_env_demos(n_episodes, valid, seed, shift=0, gen_no_answer_que
             directions = []
 
             obss = []
+
+            # to generate noisy example trajectories
+            # the value are empirically found
+            # the idea is to get around half of the trajectories with no random actions
+            # and a decreasing number of examples as the trajectories get more and more noisy
             randomness_of_the_agent = np.random.choice(np.array([0., 0.1, 0.4, 0.8]),
                                                        size=1,
                                                        p=[0.45, 0.35, 0.1, 0.1])
-
             try:
                 action_done = None
                 while not done:
@@ -702,14 +674,11 @@ def generate_multi_env_demos(n_episodes, valid, seed, shift=0, gen_no_answer_que
 
 logging.basicConfig(level='INFO', format="%(asctime)s: %(levelname)s: %(message)s")
 logger.info(args)
+
+
 # Training demos
 
 if args.jobs == 0:
-    """demo_voc = utils.get_demos_QG_voc_path('{}_agent_done'.format('multienv2'), None, None, valid=False)
-    demo_voc = demo_voc.replace('QG', 'QG_no_answer')
-    print(demo_voc)
-    vocab = utils.load_voc(demo_voc)
-    questionable_words = vocab['answer'].counts.keys()"""
     vocab = create_vocab(gen_no_answer_question=args.gen_no_answer_question)
     # analyse the vocabulary of the question
     vocab_answer_qg = set()

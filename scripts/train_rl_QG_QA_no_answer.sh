@@ -1,7 +1,6 @@
 #!/bin/sh
 export BABYAI_STORAGE='storage'
-# eval "$(conda shell.bash hook)"
-# conda activate ella
+
 python babyai/scripts/train_rl.py \
 --arch expert_filmcnn \
 --env $1 \

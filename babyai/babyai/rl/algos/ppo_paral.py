@@ -1,3 +1,5 @@
+### Parallelised version of ppo.py
+
 import numpy
 import torch
 try:

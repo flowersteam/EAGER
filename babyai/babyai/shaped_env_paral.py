@@ -1,4 +1,7 @@
+### Parallelised version of shaped_env.py
+
 import os
+
 try:
     import idr_torch
 except (KeyError, ModuleNotFoundError) as e:
@@ -120,9 +123,10 @@ def load_model(no_answer, debiased, train_env, biased_train_env, model_QA, epoch
                                                                                                               epoch_QA)))
             if debiased == True:
                 qa_l = Model_l(attr, emb_size, 0, pad=0)
-                qa_l.load_state_dict(torch.load('storage/models/{}_no_answer_l_class/model_{}/et_qa_{}.pt'.format(train_env,
-                                                                                                                  model_qa_l,
-                                                                                                                  epoch_qa_l)))
+                qa_l.load_state_dict(
+                    torch.load('storage/models/{}_no_answer_l_class/model_{}/et_qa_{}.pt'.format(train_env,
+                                                                                                 model_qa_l,
+                                                                                                 epoch_qa_l)))
                 qa_l.cuda()
                 qa_l.eval()
         else:
@@ -308,7 +312,7 @@ def multi_worker(conn, envs):
                             adj2 = str(m[7])
                             obj2 = str(m[8])
                             rand_value = np.random.rand()
-                            while dict_biased_proba[obj1][adj1]*dict_biased_proba[obj2][adj2] < rand_value:
+                            while dict_biased_proba[obj1][adj1] * dict_biased_proba[obj2][adj2] < rand_value:
                                 """print("mission: {}".format(obs["mission"]))
                                 print('{} < {}'.format(dict_biased_proba[obj1][adj1]*dict_biased_proba[obj2][adj2], rand_value))"""
                                 env.reset()
@@ -403,7 +407,8 @@ class ParallelShapedEnv(gym.Env):
                  epoch_qa_l=None,  # epoch for the linguistic only QA
                  debiased=None,
                  # if the original dataset is biased, debiased by doing the difference with prediction learn only with the language
-                 biased_env=None, # generate a biased env with higher probability to have some combination of words only for PNL env
+                 biased_env=None,
+                 # generate a biased env with higher probability to have some combination of words only for PNL env
                  biased_train_env=None,  # to select a QA train on a biased env only for PNL
                  stateactionpredictor=None,  # if you use a reward based on curiosity
                  obss_preprocessor=None):
@@ -838,23 +843,27 @@ class ParallelShapedEnv(gym.Env):
                                 'answers']
                             answer_pred_QA_l = self.QA_l.forward(self.vocabulary['question'], **demo_batch)[
                                 'answers']
-                            answer_pred_local = F.pad(F.relu(F.softmax(answer_pred_QA, dim=1) - F.softmax(answer_pred_QA_l, dim=1)),
-                                                      (0, 0, 0, slices[0]['size_tensor'][0]-slices[0]['size_tensor'][idr_torch.rank]),
-                                                      "constant", 0).contiguous()
+                            answer_pred_local = F.pad(
+                                F.relu(F.softmax(answer_pred_QA, dim=1) - F.softmax(answer_pred_QA_l, dim=1)),
+                                (0, 0, 0, slices[0]['size_tensor'][0] - slices[0]['size_tensor'][idr_torch.rank]),
+                                "constant", 0).contiguous()
                         else:
-                            answer_pred_local = torch.zeros((slices[0]['size_tensor'][0], len(self.vocabulary['answer'])), device=gpu).contiguous()
+                            answer_pred_local = torch.zeros(
+                                (slices[0]['size_tensor'][0], len(self.vocabulary['answer'])), device=gpu).contiguous()
                         tensor_list = [torch.zeros((slices[0]['size_tensor'][0], len(self.vocabulary['answer'])),
                                                    dtype=torch.float32).cuda() for _ in range(self.number_parallel_QA)]
                         dist.all_gather(tensor_list, answer_pred_local)
                     else:
                         if slices[0]['size_tensor'][idr_torch.rank] > 0:
                             demo_batch = {k: slices[idr_torch.rank][k].to(gpu) for k in
-                                      slices[idr_torch.rank].keys() if (k != 'answers' and k != 'size_tensor')}
-                            answer_pred_local = F.pad(self.QA.forward(self.vocabulary['question'], **demo_batch)['answers'],
-                                                      (0, 0, 0, slices[0]['size_tensor'][0]-slices[0]['size_tensor'][idr_torch.rank]),
-                                                      "constant", 0).contiguous()
+                                          slices[idr_torch.rank].keys() if (k != 'answers' and k != 'size_tensor')}
+                            answer_pred_local = F.pad(
+                                self.QA.forward(self.vocabulary['question'], **demo_batch)['answers'],
+                                (0, 0, 0, slices[0]['size_tensor'][0] - slices[0]['size_tensor'][idr_torch.rank]),
+                                "constant", 0).contiguous()
                         else:
-                            answer_pred_local = torch.zeros((slices[0]['size_tensor'][0], len(self.vocabulary['answer'])), device=gpu).contiguous()
+                            answer_pred_local = torch.zeros(
+                                (slices[0]['size_tensor'][0], len(self.vocabulary['answer'])), device=gpu).contiguous()
                         # print("rank: {}, answer_pred_shape: {}".format(idr_torch.rank, answer_pred_local.shape))
                         tensor_list = [torch.zeros((slices[0]['size_tensor'][0], len(self.vocabulary['answer'])),
                                                    dtype=torch.float32).cuda() for _ in range(self.number_parallel_QA)]

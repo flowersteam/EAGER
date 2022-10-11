@@ -7,11 +7,6 @@ Script to train the agent through reinforcement learning.
 import os
 import sys
 
-"""===ONLY for Jeanzay=="""
-sys.path.append(os.getcwd())
-sys.path.append('/gpfsdswork/projects/rech/imi/uez56by/code/ELLA/babyai')
-sys.path.append('/gpfsdswork/projects/rech/imi/uez56by/code/ELLA/gym-minigrid')
-
 import logging
 import csv
 import json
@@ -118,14 +113,16 @@ if __name__ == "__main__":
     parser.add_argument("--done-classifier", action="store_true", default=False,
                         help="whether pi_l is actually a binary termination classifier")
 
+    # The LEARN baseline is inherited from the paper ELLA but not used in EAGER
     parser.add_argument("--learn-baseline", default=None,
                         help="model to use for LEARN baseline classifier")
 
     parser.add_argument("--debug", action="store_true", default=False,
                         help="whether to run RL in debug mode")
 
+    # Arguments specific to EAGER
     parser.add_argument("--type-QG-QA-reward", type=str, default=None,
-                        help="what type of QGQA reward is chosen simple or cumulative_scaled")
+                        help="what type of QGQA reward is chosen: simple (just 0/1) or adjust (reward proportional to the confidence in the answer)")
     parser.add_argument("--no-answer-question", type=bool, default=False,
                         help="use a model where the QA can answer no_answer")
     parser.add_argument("--train-env", default=None,
@@ -134,41 +131,15 @@ if __name__ == "__main__":
                         help="model of the QA")
     parser.add_argument("--epoch-QA", type=int, default=None,
                         help="epoch of the model used for the QA")
-    parser.add_argument("--model-qa-l", type=int, default=None,
-                        help="model of the linguistic only QA")
-    parser.add_argument("--epoch-qa-l", type=int, default=None,
-                        help="epoch of the model used for the linguistic only QA")
-    parser.add_argument("--debiased", type=int, default=0,
-                        help="if we have to use the debiasing method using the linguistic only QA")
-    parser.add_argument("--biased-train-env", action="store_true", default=False,
-                        help="to select a QA that has been trained on a biased PNL environment")
-    parser.add_argument("--biased-env", type=int, default=0,
-                        help="generate biased env with a higher probability to see some combination of words in the obs[mission], only for PNL env")
+
     parser.add_argument("--saving-agent-traj", type=int, default=None,
-                        help="save the agent every save-agent-traj frames, to study the evolution of the behaviour of the agent")
+                        help="save the agent after every number of save-agent-traj frames, to study the evolution of the behaviour of the agent")
 
     args = parser.parse_args()
 
     utils.seed(args.seed)
 
-    print('========')
-    print(args.pi_l_scale)
-    print(args.model)
-    print(args.procs)
-    print(args.no_answer_question)
-    if args.debiased != 0:
-        debiased = True
-        print("debiased")
-    else:
-        debiased = False
-        print("not debiased")
-    if args.biased_env != 0:
-        biased_env = True
-        print("biased_env")
-    else:
-        biased_env = False
-        print("rl env is not biased")
-    print('========')
+
     # Generate environments
 
     envs = []
@@ -208,8 +179,7 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     # Define logger and Tensorboard writer and CSV writer
-    if args.reward_shaping in ['IC',
-                               'RIDE']:
+    if args.reward_shaping in ['RIDE']:
         header = (["update", "episodes", "frames", "FPS", "duration"]
                   + ["return_" + stat for stat in ['mean', 'std', 'min', 'max']]
                   + ["success_rate"]
@@ -339,6 +309,8 @@ if __name__ == "__main__":
         subtask_model = None
         subtask_model_preproc = None
         subtask_dataset = None
+
+    # LEARN
     learn_baseline_cls = None
     learn_baseline_preproc = None
     if args.reward_shaping in ['learn_baseline']:
@@ -363,8 +335,7 @@ if __name__ == "__main__":
             action_space = envs[0].action_space
             done_action = 1
 
-        if args.reward_shaping in ['IC',
-                                   'RIDE']:
+        if args.reward_shaping in ['RIDE']:
             # Define StateActionPredictor model
             logger.info("loading StateActionPredictorModel")
             stactpredictor = utils.load_stactpredictor_model(args.model, raise_not_found=False)
@@ -392,8 +363,6 @@ if __name__ == "__main__":
                                  type_QG_QA_reward=args.type_QG_QA_reward,
                                  no_answer_question=args.no_answer_question,
                                  train_env=args.train_env, model_QA=args.model_QA, epoch_QA=args.epoch_QA,
-                                 model_qa_l=args.model_qa_l, epoch_qa_l=args.epoch_qa_l,
-                                 debiased=debiased, biased_env=biased_env, biased_train_env=args.biased_train_env,
                                  stateactionpredictor=stactpredictor, obss_preprocessor=obss_preprocessor)
 
 
@@ -419,19 +388,6 @@ if __name__ == "__main__":
 
 
     # Set reward shaping function
-    def bonus_penalty(_0, _1, reward, _2, info):
-        if info[0] > 0:
-            return [args.reward_scale * reward + args.pi_l_scale * max(info[0], 1), args.pi_l_scale * max(info[0], 1)]
-        elif info[1] > 0:
-            return [args.reward_scale * reward - args.pi_l_scale_2 * max(info[1], 1),
-                    -args.pi_l_scale_2 * max(info[1], 1)]
-        else:
-            return [args.reward_scale * reward, 0]
-
-
-    if args.reward_shaping == "multiply":
-        reshape_reward = lambda _0, _1, reward, _2, _3: [args.reward_scale * reward, 0]
-
 
     def subtask_shaping(_0, _1, reward, _2, info):
         if reward > 0:
@@ -542,8 +498,7 @@ if __name__ == "__main__":
             reshaped_return_bonus_per_episode = utils.synthesize(logs["reshaped_return_bonus_per_episode"])
             num_frames_per_episode = utils.synthesize(logs["num_frames_per_episode"])
 
-            if args.reward_shaping in ['IC',
-                                       'RIDE']:
+            if args.reward_shaping in ['RIDE']:
                 data = [status['i'], status['num_episodes'], status['num_frames'],
                         fps, total_ellapsed_time,
                         *return_per_episode.values(),
@@ -655,8 +610,7 @@ if __name__ == "__main__":
                     utils.save_model(acmodel, args.model + '_frame_{}'.format(status['num_frames']), writer)
                     save_at_frame += args.saving_agent_traj
 
-            if args.reward_shaping in ['IC',
-                                       'RIDE']:
+            if args.reward_shaping in ['RIDE']:
                 save_pred_model = False
                 inverse_pred_error = 1 / logs["error_pred"]
                 if inverse_pred_error > best_inverse_pred_error:

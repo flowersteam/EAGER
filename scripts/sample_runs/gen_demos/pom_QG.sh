@@ -1,1 +1,0 @@
-scripts/gen_ll_demos_QG.sh BabyAI-OpenAndPickupMedium-v0 POM

@@ -16,11 +16,6 @@ import logging
 import torch
 import pickle as pkl
 
-"""===ONLY for Jeanzay=="""
-sys.path.append(os.getcwd())
-sys.path.append('/gpfsdswork/projects/rech/imi/uez56by/code/ELLA/babyai')
-sys.path.append('/gpfsdswork/projects/rech/imi/uez56by/code/ELLA/gym-minigrid')
-
 import babyai.utils as utils
 from babyai.arguments import ArgumentParser
 from babyai.imitation_QA import ImitationLearning
@@ -52,6 +47,8 @@ parser.add_argument("--full-obs", action="store_true", default=False,
 parser.add_argument("--ego", action="store_true", default=False,
                     help="use egocentric full observations")
 
+
+# EAGER arguments
 parser.add_argument("--extra-actions", type=int, default=0,
                     help="number of extra actions to add to the action space")
 parser.add_argument("--QA", action="store_true", default=False,
@@ -62,7 +59,7 @@ parser.add_argument("--oversample", type=int, default=1,
 parser.add_argument("--model-number", type=int, default=0,
                     help="number of the model that will be saved")
 parser.add_argument("--simple-embedder", type=bool, default=True,
-                    help="replace the resnet18 by a simpler embedder")
+                    help="replace the resnet18 by a simpler embedder")  # in the paper we always use the simple embedder
 parser.add_argument("--no-answer-question", type=bool, default=False,
                     help="presence of unanswerable questions")
 parser.add_argument("--biased", type=bool, default=False,

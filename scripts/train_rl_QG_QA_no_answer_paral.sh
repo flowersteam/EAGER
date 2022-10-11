@@ -1,8 +1,7 @@
 #!/bin/sh
 export BABYAI_STORAGE='storage'
 echo $SLURM_STEP_GPUS
-# eval "$(conda shell.bash hook)"
-# conda activate ella
+
 python3 -u babyai/scripts/train_rl_paral.py \
 --arch expert_filmcnn \
 --env $1 \

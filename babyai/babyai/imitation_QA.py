@@ -1,16 +1,10 @@
-import copy
-import gym
-import time
-import datetime
 import gc
 import numpy as np
-import sys
-import itertools
+
 import torch
 import pickle as pkl
 import blosc
-import multiprocessing
-import os
+
 import logging
 import babyai.utils as utils
 
@@ -19,10 +13,7 @@ from torch.nn import functional as F
 from torch.nn.utils.rnn import pad_sequence
 
 from tqdm import tqdm
-from PIL import Image
-from gym import spaces
 
-from babyai.evaluate import batch_evaluate
 from babyai.QA import Model
 from babyai.QA_simple import Model as Model_simple
 
@@ -60,24 +51,7 @@ class ImitationLearning(object):
                 logger.info('loading voc train demos')
                 self.demos_voc = utils.load_voc(demos_voc)
                 logger.info('loaded voc train demos')
-                """
-                demos_path_l_class = str(demos_path).replace("QG", "QG_no_answer_biased_l_class")
-                demos_path_valid_l_class = str(demos_path_valid).replace("QG", "QG_no_answer_biased_l_class")
-                demos_voc_l_class = str(demos_voc).replace("QG", "QG_no_answer_biased_l_class")
-                print(demos_path_l_class)
-                print(demos_path_valid_l_class)
-                print(demos_voc_l_class)
-                logger.info('loading train demos language classifier')
-                self.train_demos_l_class = utils.load_demos(demos_path_l_class)
-                logger.info('loaded train demos language classifier')
-        
-                logger.info('loading valid demos language classifier')
-                self.valid_demos_l_class = utils.load_demos(demos_path_valid_l_class)
-                logger.info('loaded valid demos language classifier')
-        
-                logger.info('loading voc train demos language classifier')
-                self.demos_voc_l_class = utils.load_voc(demos_voc_l_class)
-                logger.info('loaded voc train demos language classifier')"""
+
 
             else:
                 demos_path = str(demos_path).replace("QG", "QG_no_answer")
@@ -113,18 +87,6 @@ class ImitationLearning(object):
             logger.info('loaded voc train demos')
 
 
-        """
-        if args.episodes:
-            if args.episodes > len(self.train_demos['questions']):
-                raise ValueError("there are only {} train demos".format(len(self.train_demos['questions'])))
-        
-            self.train_demos = {self.train_demos[k]: (self.train_demos[k][:args.episodes] if k != 'length_frames_max' else self.train_demos[k]) for k in self.train_demos}
-
-        if args.val_episodes > len(self.valid_demos['questions']):
-            logger.info('Using all the available {} demos to evaluate valid. accuracy'.format(len(self.valid_demos['questions'])))
-        self.valid_demos = {self.valid_demos[k]: (self.valid_demos[k][:self.args.val_episodes] if k != 'length_frames_max' else self.valid_demos[k]) for k in self.valid_demos}
-        """
-
         # Define episodic transformer for QA
         if self.args.QA:
             emb_size = len(self.demos_voc['question'])
@@ -147,17 +109,6 @@ class ImitationLearning(object):
                                                            step_size=4,
                                                            gamma=0.1)
 
-        """self.scheduler_2 = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer,
-                                                                      mode='min',
-                                                                      factor=0.1,
-                                                                      patience=2)"""
-        """self.scheduler_3 = torch.optim.lr_scheduler.StepLR(self.optimizer,
-                                                           step_size=5,
-                                                           gamma=0.1)"""
-        """self.scheduler_seq = torch.optim.lr_scheduler.SequentialLR(self.optimizer,
-                                                                   schedulers=[self.scheduler_1, self.scheduler_3],
-                                                                   milestones=[10])"""
-
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def generate_batch(self, indices, batch_size, train=True):
@@ -174,23 +125,18 @@ class ImitationLearning(object):
                     if k != 'length_frames_max' and k != 'env_ids' and k != 'missions':
                         if k == 'questions':
                             batch_demo[k] = []
-                            # print('k == questions')
-                            # print(demo[k][0])
-                            # print(demo[k][0].shape[0])
                             for i in indices[offset: offset + batch_size]:
                                 len_q = len(demo[k][i])
                                 for j in range(len_q):
                                     batch_demo[k].append(demo[k][i][j])
-                            # print(batch_demo[k][:4])
+
                         elif k == 'answers':
                             batch_demo[k] = []
-                            # print('k == answers')
-                            # print(demo[k][0])
                             for i in indices[offset: offset + batch_size]:
                                 len_q = len(demo[k][i])
                                 for j in range(len_q):
                                     batch_demo[k].append(demo[k][i][j])
-                            # print(batch_demo[k][:4])
+
 
                         else:
                             batch_demo[k] = []
@@ -202,7 +148,6 @@ class ImitationLearning(object):
                                     elif k == 'frames':
                                         frames = blosc.unpack_array(demo[k][i])
                                         frames_tensor = torch.from_numpy(frames)
-                                        # batch_demo[k].append(torch.unsqueeze(frames_tensor.type(torch.FloatTensor), 0))
                                         batch_demo[k].append(frames_tensor)
                                     else:
                                         batch_demo[k].append(torch.unsqueeze(torch.unsqueeze(demo[k][i], 0), 0))
@@ -212,7 +157,7 @@ class ImitationLearning(object):
                             batch_demo['length_frames_max'] = max(batch_demo[k]).cuda()
                         elif k == 'answers':
                             batch_demo[k] = torch.tensor(batch_demo[k])
-                        # print(k)
+
                     elif k != 'length_frames_max':
                         batch_demo[k] = demo[k]
 
@@ -310,14 +255,13 @@ class ImitationLearning(object):
 
                     t.update()
                 self.scheduler_1.step()
-                # print('lr {}'.format(self.scheduler_1.get_last_lr()))
-                # self.scheduler_seq.step()
 
                 log["loss_cross_entropy_train"].append(answer_loss_batch / (len(indices) // batch_size))
                 log["success_pred_train"].append(success_pred_batch / (len(indices) // batch_size))
 
             # Valid
             with torch.no_grad():
+
                 if self.args.epoch_length == 0:
                     indices = list(range(len(self.valid_demos['questions'])))
                 else:
@@ -353,14 +297,12 @@ class ImitationLearning(object):
                                               batch_demo['answers'].shape[0]
 
                         answer_loss_batch += answer_loss.cpu().detach().numpy()
-                        """table_confidence += \
-                            torch.max(softmax(answer_pred['answers']), dim=1).values.view(-1, 4).sum(dim=0).cpu().detach().numpy()/batch_size"""
+
                         t.update()
 
-                    # self.scheduler_2.step(answer_loss_batch / (len(indices) // batch_size))
                     log["loss_cross_entropy_valid"].append(answer_loss_batch / (len(indices) // batch_size))
                     log["success_pred_valid"].append(success_pred_batch / (len(indices) // batch_size))
-                    '''log["confidence"].append(table_confidence/ (len(indices) // batch_size))'''
+
 
             logger.info(
                 'Epoch {} train CE {} SR {} valid CE {} and the SR is {}'.format(e,
@@ -368,7 +310,7 @@ class ImitationLearning(object):
                                                                                  log["success_pred_train"][-1],
                                                                                  log["loss_cross_entropy_valid"][-1],
                                                                                  log["success_pred_valid"][-1]))
-            """logger.info('Confidence {}'.format(log["confidence"][-1]))"""
+
             if self.args.no_answer_question:
                 if self.args.biased and self.args.env == "BabyAI-PutNextLocal-v0":
                     pkl.dump(log, open(

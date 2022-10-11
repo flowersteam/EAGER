@@ -175,10 +175,6 @@ class BaseAlgo(ABC):
             QG_QA_reward = False
             if isinstance(env_info, tuple) and len(env_info) == 2:
                 info, pi_l_actions = env_info
-                # if pi_l_actions is not None:
-                #     if self.pi_l_actions.shape[1] != pi_l_actions.shape[0]:
-                #         self.pi_l_actions = torch.zeros((self.num_frames_per_proc, pi_l_actions.shape[0]), device=self.device, dtype=torch.int)
-                #     self.pi_l_actions[i] = pi_l_actions
             elif isinstance(env_info, dict):
                 QG_QA_reward = True
                 info = env_info["reward_QG_QA"]
