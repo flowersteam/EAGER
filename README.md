@@ -19,6 +19,10 @@ experimental study shows that this approach, which does not require engineer
 intervention to design the auxiliary objectives, improves sample efficiency by
 effectively directing exploration.
 
+**Paper**:
+
+[EAGER: Asking and Answering Questions for Automatic Reward Shaping in Language-guided RL](https://arxiv.org/abs/2206.09674)
+
 ## Installation
 Clone this repository
 ```
